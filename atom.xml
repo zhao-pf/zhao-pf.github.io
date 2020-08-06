@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.zpf23.cn/"/>
-  <updated>2020-08-01T06:54:01.814Z</updated>
+  <updated>2020-08-06T11:51:40.734Z</updated>
   <id>https://www.zpf23.cn/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何优雅的禁止小学生玩游戏</title>
+    <link href="https://www.zpf23.cn/2020/8-6-DontPlayGame.html"/>
+    <id>https://www.zpf23.cn/2020/8-6-DontPlayGame.html</id>
+    <published>2020-08-06T10:58:46.000Z</published>
+    <updated>2020-08-06T11:51:40.734Z</updated>
+    
+    <content type="html"><![CDATA[<p>现在的小孩真的是游戏影响学习了，我们来试试如何免Root不让他玩游戏安装游戏</p><a id="more"></a><h1 id="开撸-新建一个Android项目"><a href="#开撸-新建一个Android项目" class="headerlink" title="开撸-新建一个Android项目"></a>开撸-新建一个Android项目</h1><p>GitHub项目:<a href="https://github.com/zhao-pf/Prevent-Play-Games" title="https://github.com/zhao-pf/Prevent-Play-Games">https://github.com/zhao-pf/Prevent-Play-Games</a><br>1.直接创建一个空的接收者</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">mDeviceAdminReceiver</span> <span class="keyword">extends</span> <span class="title">DeviceAdminReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>2.填写我们超级管理员功能权限–<a href="https://developer.android.com/guide/topics/admin/device-admin" title="https://developer.android.com/guide/topics/admin/device-admin">官方文档</a><br>直接添加所有政策权限即可</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">device-admin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">uses-policies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">limit-password</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">watch-login</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">reset-password</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">force-lock</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">wipe-data</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">expire-password</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encrypted-storage</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">disable-camera</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">uses-policies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">device-admin</span>&gt;</span></span><br></pre></td></tr></table></figure><p>3.注册广播</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android:label=<span class="string">"@string/activity_sample_device_admin"</span> 指的是 Activity 的用户可读标签。</span><br><span class="line">android:label=<span class="string">"@string/sample_device_admin"</span> 标签。</span><br><span class="line">android:description=<span class="string">"@string/sample_device_admin_description"</span>说明通常比标签长，并且信息更丰富。</span><br><span class="line">android:permission=<span class="string">"android.permission.BIND_DEVICE_ADMIN"</span>  是 DeviceAdminReceiver 子类必须具有的权限，用于确保仅系统可以与接收者互动（不应向任何应用授予此权限）。该权限可防止其他应用滥用您的设备管理应用。</span><br><span class="line">android.app.action.DEVICE_ADMIN_ENABLED 是 DeviceAdminReceiver 子类必须处理才能获准管理设备的主要操作。当用户启用设备管理应用后，系统会针对接收者设置此操作。您的代码通常会在 onEnabled() 中处理此操作。要获得支持，接收者还必须请求 BIND_DEVICE_ADMIN 权限，以防止其他应用滥用。</span><br></pre></td></tr></table></figure><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--注册超级管理员的广播接收者--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">receiver</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">".mDeviceAdminReceiver"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:description</span>=<span class="string">"@string/description"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:label</span>=<span class="string">"系统优化"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:permission</span>=<span class="string">"android.permission.BIND_DEVICE_ADMIN"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">"android.app.device_admin"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:resource</span>=<span class="string">"@xml/admin"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.app.action.DEVICE_ADMIN_ENABLED"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></span><br></pre></td></tr></table></figure><p>4.最后一步，启动即可</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//利用设备超级管理员上锁App</span></span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);</span><br><span class="line">ComponentName mDeviceAdminSample = <span class="keyword">new</span> ComponentName(MainActivity.<span class="keyword">this</span>, mDeviceAdminReceiver<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdminSample);</span><br><span class="line">intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, <span class="string">"系统优化"</span>);</span><br><span class="line"><span class="comment">//激活界面中显示的内容</span></span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure><h3 id="没难度，记录一下黑科技，其实还可以进行其他的操作，比如隐藏启动图标，隐藏后通过其他应用打开入口，比如用拨号列表打开app等等操作，对了这只是对付一般的熊孩子，如果你还想安全一点，把设置界面加个安全锁就完全没问题了。"><a href="#没难度，记录一下黑科技，其实还可以进行其他的操作，比如隐藏启动图标，隐藏后通过其他应用打开入口，比如用拨号列表打开app等等操作，对了这只是对付一般的熊孩子，如果你还想安全一点，把设置界面加个安全锁就完全没问题了。" class="headerlink" title="没难度，记录一下黑科技，其实还可以进行其他的操作，比如隐藏启动图标，隐藏后通过其他应用打开入口，比如用拨号列表打开app等等操作，对了这只是对付一般的熊孩子，如果你还想安全一点，把设置界面加个安全锁就完全没问题了。"></a>没难度，记录一下黑科技，其实还可以进行其他的操作，比如隐藏启动图标，隐藏后通过其他应用打开入口，比如用拨号列表打开app等等操作，对了这只是对付一般的熊孩子，如果你还想安全一点，把设置界面加个安全锁就完全没问题了。</h3><p>效果图:<br><img src="https://image.smodel.top/images/2020/22/1.jpg" alt=""><br><img src="https://image.smodel.top/images/2020/22/2.jpg" alt=""><br><img src="https://image.smodel.top/images/2020/22/3.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;现在的小孩真的是游戏影响学习了，我们来试试如何免Root不让他玩游戏安装游戏&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="开发的APP" scheme="https://www.zpf23.cn/tags/%E5%BC%80%E5%8F%91%E7%9A%84APP/"/>
+    
+  </entry>
   
   <entry>
     <title>历史翻译结果集记录(截至8月1日)</title>
@@ -435,27 +456,6 @@
     
     
       <category term="坑" scheme="https://www.zpf23.cn/tags/%E5%9D%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>安装黑苹果的一些问题</title>
-    <link href="https://www.zpf23.cn/2020/3-5-BlackMacInstall.html"/>
-    <id>https://www.zpf23.cn/2020/3-5-BlackMacInstall.html</id>
-    <published>2020-03-05T08:41:46.000Z</published>
-    <updated>2020-07-27T06:41:27.702Z</updated>
-    
-    <content type="html"><![CDATA[<p>在家本来想着重装一下自己系统，顺便想着装一下黑苹果试试<br>在安装过程中遇到几个小问题<br>第一个难点就是下载系统，大多都是百度云真的太慢了，会员也是一样的慢<br>下载完镜像，用BalenaEtcher这个工具制作启动盘<br> <a id="more"></a><br>做完以后需要替换efi文件，用diskgenuis打开u盘的分区，删掉efi文件以后，把网上下载的拖进去，我是机械革命z2 air<br>下载完更改完之后就好办了，U盘插上，进入四叶草好像是，然后选择苹果，然后按照他的操作来就行，他在分区时候有一个选项，必须弄成mac的那个  之后一路继续就好，进去以后没有网，网上查了资料之后需要外置网卡才可以<br><img src="https://image.smodel.top/images/2020/9/1.jpg" alt=""><br><img src="https://image.smodel.top/images/2020/9/2.jpg" alt="">  </p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在家本来想着重装一下自己系统，顺便想着装一下黑苹果试试&lt;br&gt;在安装过程中遇到几个小问题&lt;br&gt;第一个难点就是下载系统，大多都是百度云真的太慢了，会员也是一样的慢&lt;br&gt;下载完镜像，用BalenaEtcher这个工具制作启动盘&lt;br&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="教程" scheme="https://www.zpf23.cn/tags/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
